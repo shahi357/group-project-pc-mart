@@ -1,14 +1,25 @@
 import { Order } from "../model/order.model.js";
+import { Product } from "../model/product.model.js";
 
 export const addNewOrder = async (req, res) => {
   try {
     const items = req.body.items;
+
+    const productIds = items.map((item) => {
+      return { _id: item.productId };
+    });
+    const products = await Product.find({ _id: { $in: productIds } });
     const newItems = items.map((value) => {
+      const product = products.find(
+        (item) => item._id.toString() === value.productId.toString()
+      );
       return {
         product: value.productId,
         quantity: value.quantity,
+        price: product.productPrice,
       };
     });
+    console.log(newItems, "new ite");
     const saveObject = req.body;
     saveObject.orderDetails = newItems;
     saveObject.user = req.user;

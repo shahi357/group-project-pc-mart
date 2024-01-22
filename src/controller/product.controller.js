@@ -46,8 +46,8 @@ export const getAllProducts = async (req, res) => {
     const query = req.query.category;
     const brand = req.query.brand;
     const filter = {
-      ...(query && { productType: query }),
-      ...(brand && { productBrand: brand }),
+      ...(query && query !==null && { productType: query }),
+      ...(brand && query !==null && { productBrand: brand }),
     };
 
     console.log(filter, "filtering");

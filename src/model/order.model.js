@@ -11,6 +11,9 @@ const orderDetailsSchema = new mongoose.Schema({
   quantity: {
     type: Number,
   },
+  price: {
+    type: Number,
+  },
 });
 
 const orderSchema = new mongoose.Schema({
@@ -26,11 +29,19 @@ const orderSchema = new mongoose.Schema({
     ref: "users",
     required: false,
   },
-  orderedDate: {
+  orderDate: {
     type: Date,
   },
   orderDetails: [orderDetailsSchema],
 });
+
+orderSchema.virtual("total").get(function () {
+  return this.orderDetails?.reduce((sum, item) => {
+    return (sum += (item.price || 0) * (item.quantity || 0));
+  }, 0) || 0;
+});
+orderSchema.set("toJSON", { virtuals: true });
+orderSchema.set("toObject", { virtuals: true });
 
 const Order = mongoose.model("orders", orderSchema);
 export { Order };
