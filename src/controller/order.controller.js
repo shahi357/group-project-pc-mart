@@ -36,7 +36,7 @@ export const addNewOrder = async (req, res) => {
 
 export const getOrderById = async (req, res) => {
   try {
-    const order = await Order.findById(req.params.id);
+    const order = await Order.findById(req.params.id).populate("orderDetails.product");
     if (!order) {
       res.status(404).json({ message: "order not found" });
     }
@@ -53,7 +53,7 @@ export const getAllOrder = async (req, res) => {
   try {
     const orders = await Order.find()
       .populate("orderDetails.product")
-      .populate("user")
+      // .populate("user")
       .exec();
     res
       .status(200)
