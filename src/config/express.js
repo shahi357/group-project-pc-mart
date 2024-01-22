@@ -13,8 +13,7 @@ app.use(express.json());
 
 app.get("/health", (req, res) => {
   res.status(200).json({
-    message: "Application is active.",
-    data: "https://github.com/shahi357/Group_Project-PcMart.git",
+    message: "Application is active."
   });
 });
 
