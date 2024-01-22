@@ -45,9 +45,15 @@ export const getAllProducts = async (req, res) => {
   try {
     const query = req.query.category;
     const brand = req.query.brand;
+    const search = req.query.search;
+    const searchReg = { $regex: `^${search}`, $options: "i" };
     const filter = {
       ...(query && query !== null && { productType: query }),
       ...(brand && query !== null && { productBrand: brand }),
+      ...(search &&
+        search !== null && {
+          productName: searchReg,
+        }),
     };
 
     const products = await Product.find(filter);
@@ -100,7 +106,7 @@ export const updateProduct = async (req, res) => {
       { _id: productId },
       updateProduct,
       {
-        new:true
+        new: true,
       }
     );
     res.status(200).json({
