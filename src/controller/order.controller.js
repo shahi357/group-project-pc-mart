@@ -19,7 +19,6 @@ export const addNewOrder = async (req, res) => {
         price: product.productPrice,
       };
     });
-    console.log(newItems, "new ite");
     const saveObject = req.body;
     saveObject.orderDetails = newItems;
     saveObject.user = req.user;

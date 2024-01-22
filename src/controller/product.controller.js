@@ -50,7 +50,6 @@ export const getAllProducts = async (req, res) => {
       ...(brand && query !==null && { productBrand: brand }),
     };
 
-    console.log(filter, "filtering");
     const products = await Product.find(filter);
     res.status(200).json({ message: "Product found", data: products });
   } catch (error) {
