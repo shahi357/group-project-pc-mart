@@ -4,6 +4,7 @@ import {
   deleteProduct,
   getAllProducts,
   getProductById,
+  updateProduct,
 } from "../controller/product.controller.js";
 import { uploadImage } from "../services/multer.js";
 import { validateRequest } from "../config/request-validator.js";
@@ -22,5 +23,13 @@ router.post(
 );
 router.get("/:id", getProductById);
 router.delete("/:id", auth, admin, deleteProduct);
+router.put(
+  "/:id",
+  auth,
+  admin,
+  uploadImage.single("image"),
+  validateRequest(addProductSchema),
+  updateProduct
+);
 
 export default router;

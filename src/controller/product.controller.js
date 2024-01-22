@@ -46,8 +46,8 @@ export const getAllProducts = async (req, res) => {
     const query = req.query.category;
     const brand = req.query.brand;
     const filter = {
-      ...(query && query !==null && { productType: query }),
-      ...(brand && query !==null && { productBrand: brand }),
+      ...(query && query !== null && { productType: query }),
+      ...(brand && query !== null && { productBrand: brand }),
     };
 
     const products = await Product.find(filter);
@@ -74,6 +74,41 @@ export const deleteProduct = async (req, res) => {
     await Product.findByIdAndDelete(req.params.id);
     res.status(200).json({ message: "Product deleted successfully" });
   } catch (error) {
+    res.status(400).json({ message: "Something went wrong!" });
+  }
+};
+
+export const updateProduct = async (req, res) => {
+  try {
+    const productId = req.params.id;
+    const updateProduct = {
+      productType: req.body.productType,
+      productBrand: req.body.productBrand,
+      productWarranty: req.body.productWarranty,
+      productColor: req.body.productColor,
+      productName: req.body.productName,
+      productQuantity: req.body.productQuantity,
+      productWeight: req.body.productWeight,
+      productDescription: req.body.productDescription,
+      productPrice: req.body.productPrice,
+      productDiscount: req.body.productDiscount,
+    };
+    if (req.file?.filename) {
+      updateProduct.image = req.file?.filename;
+    }
+    const update = await Product.findByIdAndUpdate(
+      { _id: productId },
+      updateProduct,
+      {
+        new:true
+      }
+    );
+    res.status(200).json({
+      message: "Product updated successfully",
+      data: update,
+    });
+  } catch (error) {
+    console.log(error, "PRODUCT_UPDATE_FAILED");
     res.status(400).json({ message: "Something went wrong!" });
   }
 };
