@@ -43,10 +43,18 @@ export const getProductById = async (req, res) => {
 /** Public access */
 export const getAllProducts = async (req, res) => {
   try {
-    const products = await Product.find();
+    const query = req.query.category;
+    const brand = req.query.brand;
+    const filter = {
+      ...(query && { productType: query }),
+      ...(brand && { productBrand: brand }),
+    };
+
+    console.log(filter, "filtering");
+    const products = await Product.find(filter);
     res.status(200).json({ message: "Product found", data: products });
   } catch (error) {
-    console.log(error,"GET_ALL_PRODUCTS");
+    console.log(error, "GET_ALL_PRODUCTS");
     res.status(400).json({ message: "Something went wrong!" });
   }
 };
