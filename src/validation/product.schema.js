@@ -19,7 +19,7 @@ export const addProductSchema = Joi.object({
     "misi",
     "others"
   ),
-  productWarranty: Joi.string().valid("local", "brand", "na"),
+  productWarranty: Joi.string().valid("local", "brand", "no"),
   productColor: Joi.string().required(),
   productName: Joi.string().required(),
   productWeight: Joi.number().required(),
